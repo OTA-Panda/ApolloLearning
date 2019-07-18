@@ -35,15 +35,6 @@
       "size": "medium",
       "price": 20,
       "quantity": 20
-    },
-    {
-      "name": "a",
-      "description": "b",
-      "color": "c",
-      "size": "d",
-      "price": 1,
-      "quantity": 2,
-      "id": 5
     }
   ]
 }
