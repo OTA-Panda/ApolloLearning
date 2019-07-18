@@ -7,15 +7,25 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import { HttpLink } from 'apollo-link-http';
 import { ApolloClient } from 'apollo-client';
 
-import { split } from 'apollo-link';
+import { split, ApolloLink } from 'apollo-link';
 import { WebSocketLink } from 'apollo-link-ws';
 import { getMainDefinition } from 'apollo-utilities';
+
+import { withClientState } from 'apollo-link-state'
 
 import './index.css';
 
 const GRAPHQL_PORT = process.env.REACT_APP_GRAPHQL_PORT || 3010;
 
 const cache = new InMemoryCache();
+
+const clienStateLink = withClientState({
+  cache,
+  defaults: {
+    toolName: 'Widget Tool',
+  },
+  resolvers: {},
+})
 
 const httpLink = new HttpLink({
   uri: `http://localhost:${GRAPHQL_PORT}/graphql`,
@@ -31,7 +41,7 @@ const link = split(
     return kind === 'OperationDefinition' && operation === 'subscription';
   },
   webSocketLink,
-  httpLink
+  ApolloLink.from([ clienStateLink, httpLink ])
 );
 
 const client = new ApolloClient({
