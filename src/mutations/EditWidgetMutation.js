@@ -16,7 +16,11 @@ export const EditWidgetMutation = props => {
       }
 
       const cancelWidget = () => editWidget(-1)
-      return <WidgetTable {...props} onCancelWidget={cancelWidget}/>
+
+      return <WidgetTable {...props}
+        onEditWidget={editWidget}  
+        onCancelWidget={cancelWidget}
+      />
 
     }}
   </ApolloConsumer>
