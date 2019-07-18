@@ -1,0 +1,1 @@
+export { DeleteWidgetMutation, DELETE_WIDGET_MUTATION } from './DeleteWidgetMutation'

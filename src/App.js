@@ -1,34 +1,37 @@
 import * as React from 'react';
-import { Query, Mutation } from 'react-apollo';
+import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 
 import {
-  ToolHeader,
-  WidgetTable,
   WidgetForm,
-  
 } from './components';
 
 import {
-  SubscriptionInfoNotification,
+  // SubscriptionInfoNotification,
   WidgetInsertedSubscription,
   WidgetDeletedSubscription,
 } from './subscriptions'
 
-const APP_QUERY = gql`
-  query App {
-    toolName @client
-    widgets {
-      id
-      name
-      description
-      color
-      size
-      price
-      quantity
-    }
-  }
-`;
+import {
+  ToolNameQuery,
+  WidgetsQuery,
+  // TOOL_NAME_QUERY,
+  WIDGETS_QUERY,
+} from './queries'
+
+// const APP_QUERY = gql`
+//   query App {
+//     widgets {
+//       id
+//       name
+//       description
+//       color
+//       size
+//       price
+//       quantity
+//     }
+//   }
+// `;
 
 export const INSERT_WIDGET_MUTATION = gql`
   mutation InsertWidget($widget: InsertWidget) {
@@ -44,58 +47,29 @@ export const INSERT_WIDGET_MUTATION = gql`
   }
 `;
 
-const DELETE_WIDGET_MUTATION = gql`
-  mutation DeleteWidget($widgetId: ID) {
-    deleteWidget(widgetId: $widgetId) {
-      id
-      name
-      description
-      color
-      size
-      price
-      quantity
-    }
-  }
-`;
-
-// MOVED TO ../subscriptions
-// const WIDGET_INSERTED_SUBSCRIPTION = gql`
-//   subscription WidgetInserted {
-//     widgetInserted {
+// MOVE to ../mutations
+// const DELETE_WIDGET_MUTATION = gql`
+//   mutation DeleteWidget($widgetId: ID) {
+//     deleteWidget(widgetId: $widgetId) {
 //       id
 //       name
+//       description
+//       color
+//       size
+//       price
+//       quantity
 //     }
 //   }
 // `;
-
-
-// MOVED TO ../subscriptions
-// const WIDGET_DELETED_SUBSCRIPTION = gql`
-//   subscription WidgetDeleted {
-//     widgetDeleted {
-//       id
-//       name
-//     }
-//   }
-// `;
-
 
 export class App extends React.Component {
 
   render() {
     return <React.Fragment>
-      {/* <section id="notifications">
-        <SubscriptionInfoNotification subscription={WIDGET_INSERTED_SUBSCRIPTION} refetchQueries={[{ query: APP_QUERY }]}> 
-          {({ widgetInserted: { name } }) => <span>A widget named {name} was inserted!</span>}
-        </SubscriptionInfoNotification>
-        <SubscriptionInfoNotification subscription={WIDGET_DELETED_SUBSCRIPTION} refetchQueries={[{ query: APP_QUERY }]}>
-          {({ widgetDeleted: { name } }) => <span>A widget named {name} was deleted!</span>}
-        </SubscriptionInfoNotification>
-      </section> */}
       <WidgetInsertedSubscription />
       <WidgetDeletedSubscription />
-      
-      <Query query={APP_QUERY}>
+      <ToolNameQuery />
+      {/* <Query query={APP_QUERY}>
         {({ loading, error, data }) => {
 
           if (loading) return 'Loading...';
@@ -114,13 +88,13 @@ export class App extends React.Component {
               };
               //not necessarily best practice, but for example
               return <React.Fragment>
-                <ToolHeader headerText={data.toolName} />
                 <WidgetTable widgets={data.widgets} onDeleteWidget={deleteWidget} />;
               </React.Fragment>
             }}
           </Mutation>;
         }}
-      </Query>
+      </Query> */}
+      <WidgetsQuery refetchQueries={[{ query: WIDGETS_QUERY }]} />
       <Mutation mutation={INSERT_WIDGET_MUTATION}>
         {mutateInsertWidget => {
 
@@ -129,7 +103,7 @@ export class App extends React.Component {
             return mutateInsertWidget({
               variables: { widget },
               refetchQueries: () => ([
-                { query: APP_QUERY },
+                { query: WIDGETS_QUERY },
               ]),
             });
           };
