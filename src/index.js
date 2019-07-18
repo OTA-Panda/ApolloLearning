@@ -12,19 +12,46 @@ import { WebSocketLink } from 'apollo-link-ws';
 import { getMainDefinition } from 'apollo-utilities';
 
 import { withClientState } from 'apollo-link-state'
-
+import gql from 'graphql-tag'
 import './index.css';
 
 const GRAPHQL_PORT = process.env.REACT_APP_GRAPHQL_PORT || 3010;
 
 const cache = new InMemoryCache();
 
+const updateSelectedWidgetIds = selectedWidgetIdsFn =>
+  (_, {widgetId }, { cache }) => {
+
+    // since we're working with the client directly, we do no need to add @client
+    const SELECTED_WIDGET_IDS_QUERY = gql `
+      query SelectedWidgetIdsQuery {
+        selectedWidgetIds
+      }
+    `
+    const data = cache.readQuery ({ query: SELECTED_WIDGET_IDS_QUERY })
+    const newData = {
+      ...data,
+      // this function doesn't know whether it's adding or removing, it's jus grabbing
+      selectedWidgetIds: selectedWidgetIdsFn(data.selectedWidgetIds, widgetId),
+    }
+    // will actually write our value to our cache
+    cache.writeQuery({ query: SELECTED_WIDGET_IDS_QUERY, data: newData })
+  }
+
 const clienStateLink = withClientState({
   cache,
   defaults: {
     toolName: 'Widget Tool',
+    selectedWidgetIds: [],
   },
-  resolvers: {},
+  resolvers: {
+    Mutation: {
+      addSelectedWidgetId: updateSelectedWidgetIds(
+        (widgetIds, widgetId) => widgetIds.filter(wId => wId ! == widgetId)
+      ),
+      removeSelectedWidgetId: () => {},
+    }
+  },
 })
 
 const httpLink = new HttpLink({
