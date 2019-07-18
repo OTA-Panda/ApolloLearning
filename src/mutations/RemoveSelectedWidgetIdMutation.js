@@ -10,7 +10,7 @@ export const REMOVE_SELECTED_WIDGET_ID_MUTATION = gql `
   }
 `
 
-export const RemoveSelectedWidgetId = props =>
+export const RemoveSelectedWidgetIdMutation = props =>
   <Mutation mutation={ REMOVE_SELECTED_WIDGET_ID_MUTATION }>
     {mutateRemoveSelectedWidgetId =>
       <WidgetTable {...props}

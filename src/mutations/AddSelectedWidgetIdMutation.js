@@ -10,7 +10,7 @@ export const ADD_SELECTED_WIDGET_ID_MUTATION = gql `
   }
 `
 
-export const AddSelectedWidgetId = props =>
+export const AddSelectedWidgetIdMutation = props =>
   <Mutation mutation={ ADD_SELECTED_WIDGET_ID_MUTATION }>
     {mutateAddSelectedWidgetId =>
       <RemoveSelectedWidgetIdMutation {...props}

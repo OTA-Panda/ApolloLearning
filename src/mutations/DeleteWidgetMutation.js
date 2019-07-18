@@ -2,7 +2,7 @@ import React from 'react';
 import { Mutation } from 'react-apollo'
 import gql from 'graphql-tag'
 
-import { WidgetTable } from '../components'
+import { DeleteSelectedWidgetsMutation } from './DeleteSelectedWidgetsMutation'
 
 export const DELETE_WIDGET_MUTATION = gql`
   mutation DeleteWidget($widgetId: ID) {
@@ -20,19 +20,20 @@ export const DELETE_WIDGET_MUTATION = gql`
 
 // currently hardcoded into the table
 export const DeleteWidgetMutation = props =>
-<Mutation mutation={DELETE_WIDGET_MUTATION}>
-  {mutateDeleteWidget => {
-
-    const deleteWidget = widgetId => {
-      return mutateDeleteWidget({
-        variables: { widgetId },
-        refetchQueries: () => props.refetchQueries,
-      });
-    };
-    //not necessarily best practice, but for example
-    return <React.Fragment>
-      {/* <WidgetTable widgets={data.widgets} onDeleteWidget={deleteWidget} />; */}
-      <WidgetTable { ...props } onDeleteWidget={deleteWidget} />;
-    </React.Fragment>
-  }}
+  <Mutation mutation={DELETE_WIDGET_MUTATION}>
+    {mutateDeleteWidget => {
+      const deleteWidget = widgetId => {
+        return mutateDeleteWidget({
+          variables: { widgetId },
+          refetchQueries: () => props.refetchQueries,
+        });
+      };
+      //not necessarily best practice, but for example
+      return <React.Fragment>
+        {/* <WidgetTable widgets={data.widgets} onDeleteWidget={deleteWidget} />; */}
+        <DeleteSelectedWidgetsMutation { ...props }
+          onDeleteWidget={deleteWidget}
+        />;
+      </React.Fragment>
+    }}
   </Mutation>;
