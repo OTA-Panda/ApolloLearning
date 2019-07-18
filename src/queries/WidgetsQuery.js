@@ -2,7 +2,7 @@ import React from 'react';
 import { Query } from 'react-apollo'
 import gql from 'graphql-tag'
 
-import { DeleteWidgetMutation } from '../mutations'
+import { LocalQuery } from './LocalQuery'
 
 export const WIDGETS_QUERY = gql`
   query WidgetsQuery {
@@ -18,7 +18,7 @@ export const WIDGETS_QUERY = gql`
   }
 `;
 
-export const WidgetsQuery = () =>
+export const WidgetsQuery = props =>
   <Query query={ WIDGETS_QUERY }>
     {({ loading, error, data }) => {
       if (error) {
@@ -27,6 +27,6 @@ export const WidgetsQuery = () =>
       }
       if (loading) return null
       
-      return <DeleteWidgetMutation widgets={data.widgets} />
+      return <LocalQuery {...props} widgets={data.widgets} />
     }}
   </Query>
