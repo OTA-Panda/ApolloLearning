@@ -43,6 +43,7 @@ const clienStateLink = withClientState({
   cache,
   defaults: {
     toolName: 'Widget Tool',
+    editWidgetId: '-1',
     selectedWidgetIds: [],
   },
   resolvers: {

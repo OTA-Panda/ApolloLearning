@@ -2,7 +2,7 @@ import React from 'react';
 import { Mutation } from 'react-apollo'
 import gql from 'graphql-tag'
 
-import { WidgetTable } from '../components'
+import { EditWidgetMutation } from './EditWidgetMutation'
 
 export const REMOVE_SELECTED_WIDGET_ID_MUTATION = gql `
   mutation RemoveSelectedWidgetId($widgetId: ID) {
@@ -13,7 +13,7 @@ export const REMOVE_SELECTED_WIDGET_ID_MUTATION = gql `
 export const RemoveSelectedWidgetIdMutation = props =>
   <Mutation mutation={ REMOVE_SELECTED_WIDGET_ID_MUTATION }>
     {mutateRemoveSelectedWidgetId =>
-      <WidgetTable {...props}
+      <EditWidgetMutation {...props}
         onRemoveSelectedWidgetId={ widgetId =>
           mutateRemoveSelectedWidgetId({ variables: { widgetId } })
         }

@@ -9,6 +9,7 @@ import { DeleteWidgetMutation } from '../mutations/DeleteWidgetMutation'
 //has to match key in clientStateLink
 export const LOCAL_QUERY = gql `
   query LocalQuery {
+    editWidgetId @client
     selectedWidgetIds @client 
   }
 `
