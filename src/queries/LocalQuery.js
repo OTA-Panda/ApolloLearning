@@ -2,7 +2,7 @@ import React from 'react';
 import { Query } from 'react-apollo'
 import gql from 'graphql-tag'
 
-import { DeleteWidgetMutation } from '../mutations/DeleteWidgetMutation'
+import { ReplaceWidgetMutation } from '../mutations/ReplaceWidgetMutation'
 
 //this file makes it so we don't reset our applicaition state
 
@@ -23,7 +23,7 @@ export const LocalQuery = props =>
       }
       if (loading) return null
       
-      return <DeleteWidgetMutation {...props} {...data} />
+      return <ReplaceWidgetMutation {...props} {...data} />
     }
   }
   </Query>
