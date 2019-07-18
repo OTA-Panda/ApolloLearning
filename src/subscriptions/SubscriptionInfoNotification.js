@@ -1,7 +1,7 @@
 import React from 'react';
 import { Subscription, ApolloConsumer } from 'react-apollo';
 
-import { InfoNotification } from './InfoNotification';
+import { InfoNotification } from '../components';
 
 export const SubscriptionInfoNotification = ({ subscription, refetchQueries, children, ...props }) =>
   <Subscription subscription={subscription}>

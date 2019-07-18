@@ -6,8 +6,14 @@ import {
   ToolHeader,
   WidgetTable,
   WidgetForm,
-  SubscriptionInfoNotification
+  
 } from './components';
+
+import {
+  SubscriptionInfoNotification,
+  WidgetInsertedSubscription,
+  WidgetDeletedSubscription,
+} from './subscriptions'
 
 const APP_QUERY = gql`
   query App {
@@ -24,7 +30,7 @@ const APP_QUERY = gql`
   }
 `;
 
-const INSERT_WIDGET_MUTATION = gql`
+export const INSERT_WIDGET_MUTATION = gql`
   mutation InsertWidget($widget: InsertWidget) {
     insertWidget(widget: $widget) {
       id
@@ -52,37 +58,43 @@ const DELETE_WIDGET_MUTATION = gql`
   }
 `;
 
-const WIDGET_INSERTED_SUBSCRIPTION = gql`
-  subscription WidgetInserted {
-    widgetInserted {
-      id
-      name
-    }
-  }
-`;
+// MOVED TO ../subscriptions
+// const WIDGET_INSERTED_SUBSCRIPTION = gql`
+//   subscription WidgetInserted {
+//     widgetInserted {
+//       id
+//       name
+//     }
+//   }
+// `;
 
-const WIDGET_DELETED_SUBSCRIPTION = gql`
-  subscription WidgetDeleted {
-    widgetDeleted {
-      id
-      name
-    }
-  }
-`;
+
+// MOVED TO ../subscriptions
+// const WIDGET_DELETED_SUBSCRIPTION = gql`
+//   subscription WidgetDeleted {
+//     widgetDeleted {
+//       id
+//       name
+//     }
+//   }
+// `;
 
 
 export class App extends React.Component {
 
   render() {
     return <React.Fragment>
-      <section id="notifications">
-        <SubscriptionInfoNotification subscription={WIDGET_INSERTED_SUBSCRIPTION} refetchQueries={[{ query: APP_QUERY }]}>
+      {/* <section id="notifications">
+        <SubscriptionInfoNotification subscription={WIDGET_INSERTED_SUBSCRIPTION} refetchQueries={[{ query: APP_QUERY }]}> 
           {({ widgetInserted: { name } }) => <span>A widget named {name} was inserted!</span>}
         </SubscriptionInfoNotification>
         <SubscriptionInfoNotification subscription={WIDGET_DELETED_SUBSCRIPTION} refetchQueries={[{ query: APP_QUERY }]}>
           {({ widgetDeleted: { name } }) => <span>A widget named {name} was deleted!</span>}
         </SubscriptionInfoNotification>
-      </section>
+      </section> */}
+      <WidgetInsertedSubscription />
+      <WidgetDeletedSubscription />
+      
       <Query query={APP_QUERY}>
         {({ loading, error, data }) => {
 

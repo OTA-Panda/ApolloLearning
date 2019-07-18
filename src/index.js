@@ -19,8 +19,9 @@ const GRAPHQL_PORT = process.env.REACT_APP_GRAPHQL_PORT || 3010;
 
 const cache = new InMemoryCache();
 
+//function to manage widget Ids based on passed in function
 const updateSelectedWidgetIds = selectedWidgetIdsFn =>
-  (_, {widgetId }, { cache }) => {
+  (_, { widgetId }, { cache }) => {
 
     // since we're working with the client directly, we do no need to add @client
     const SELECTED_WIDGET_IDS_QUERY = gql `
@@ -47,9 +48,11 @@ const clienStateLink = withClientState({
   resolvers: {
     Mutation: {
       addSelectedWidgetId: updateSelectedWidgetIds(
-        (widgetIds, widgetId) => widgetIds.filter(wId => wId ! == widgetId)
+        (widgetIds, widgetId) => widgetIds.concat(widgetId)
       ),
-      removeSelectedWidgetId: () => {},
+      removeSelectedWidgetId: updateSelectedWidgetIds(
+        (widgetIds, widgetId) => widgetIds.filter(wId => wId !== widgetId)
+      ),
     }
   },
 })
