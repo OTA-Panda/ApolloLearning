@@ -5,7 +5,7 @@ import gql from 'graphql-tag'
 import { WidgetTable } from '../components'
 
 export const REMOVE_SELECTED_WIDGET_ID_MUTATION = gql `
-  mutation RemoveSelectedWidgetId($widget: ID) {
+  mutation RemoveSelectedWidgetId($widgetId: ID) {
     removeSelectedWidgetId(widgetId: $widgetId) @client
   }
 `
@@ -15,7 +15,7 @@ export const RemoveSelectedWidgetIdMutation = props =>
     {mutateRemoveSelectedWidgetId =>
       <WidgetTable {...props}
         onRemoveSelectedWidgetId={ widgetId =>
-          mutateRemoveSelectedWidgetId({ variables: widgetId })
+          mutateRemoveSelectedWidgetId({ variables: { widgetId } })
         }
       />
     }
